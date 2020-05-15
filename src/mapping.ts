@@ -37,6 +37,7 @@ export function handleKick(event: KickEvent): void {
   bidEntity.guy = bid.value2
   bidEntity.tic = bid.value3
   bidEntity.end = bid.value4
+  bidEntity.ilk = contract.ilk().toString()
 
   // Metadata.
   bidEntity.state = 'TENDING'

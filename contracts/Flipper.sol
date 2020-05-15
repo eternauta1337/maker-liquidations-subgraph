@@ -1,5 +1,3 @@
-// Mainnet: 0xd8a04F5412223F513DC55F839574430f5EC15531
-
 /*
    Selectors:
 

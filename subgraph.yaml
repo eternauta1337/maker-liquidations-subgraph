@@ -3,12 +3,128 @@ schema:
   file: ./schema.graphql
 dataSources:
   - kind: ethereum/contract
-    name: Flipper
+    name: FlipperETH
     network: mainnet
     source:
       address: '0xd8a04f5412223f513dc55f839574430f5ec15531'
       abi: Flipper
       startBlock: 8928180
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - Bid
+      abis:
+        - name: Flipper
+          file: ./abis/Flipper.json
+      eventHandlers:
+        - event: Kick(uint256,uint256,uint256,uint256,indexed address,indexed address)
+          handler: handleKick
+        - event: LogNote(indexed bytes4,indexed address,indexed bytes32,indexed bytes32,bytes)
+          topic0: '0x4b43ed1200000000000000000000000000000000000000000000000000000000' # tend(uint256,uint256,uint256)
+          handler: handleTend
+        - event: LogNote(indexed bytes4,indexed address,indexed bytes32,indexed bytes32,bytes)
+          topic0: '0x5ff3a38200000000000000000000000000000000000000000000000000000000' # dent(uint256,uint256,uint256)
+          handler: handleDent
+        - event: LogNote(indexed bytes4,indexed address,indexed bytes32,indexed bytes32,bytes)
+          topic0: '0xc959c42b00000000000000000000000000000000000000000000000000000000' # deal(uint256)
+          handler: handleDeal
+      file: ./src/mapping.ts
+  - kind: ethereum/contract
+    name: FlipperUSDC
+    network: mainnet
+    source:
+      address: '0xe6ed1d09a19bd335f051d78d5d22df3bff2c28b1'
+      abi: Flipper
+      startBlock: 9686502
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - Bid
+      abis:
+        - name: Flipper
+          file: ./abis/Flipper.json
+      eventHandlers:
+        - event: Kick(uint256,uint256,uint256,uint256,indexed address,indexed address)
+          handler: handleKick
+        - event: LogNote(indexed bytes4,indexed address,indexed bytes32,indexed bytes32,bytes)
+          topic0: '0x4b43ed1200000000000000000000000000000000000000000000000000000000' # tend(uint256,uint256,uint256)
+          handler: handleTend
+        - event: LogNote(indexed bytes4,indexed address,indexed bytes32,indexed bytes32,bytes)
+          topic0: '0x5ff3a38200000000000000000000000000000000000000000000000000000000' # dent(uint256,uint256,uint256)
+          handler: handleDent
+        - event: LogNote(indexed bytes4,indexed address,indexed bytes32,indexed bytes32,bytes)
+          topic0: '0xc959c42b00000000000000000000000000000000000000000000000000000000' # deal(uint256)
+          handler: handleDeal
+      file: ./src/mapping.ts
+  - kind: ethereum/contract
+    name: FlipperBAT
+    network: mainnet
+    source:
+      address: '0xaa745404d55f88c108a28c86abe7b5a1e7817c07'
+      abi: Flipper
+      startBlock: 8928187
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - Bid
+      abis:
+        - name: Flipper
+          file: ./abis/Flipper.json
+      eventHandlers:
+        - event: Kick(uint256,uint256,uint256,uint256,indexed address,indexed address)
+          handler: handleKick
+        - event: LogNote(indexed bytes4,indexed address,indexed bytes32,indexed bytes32,bytes)
+          topic0: '0x4b43ed1200000000000000000000000000000000000000000000000000000000' # tend(uint256,uint256,uint256)
+          handler: handleTend
+        - event: LogNote(indexed bytes4,indexed address,indexed bytes32,indexed bytes32,bytes)
+          topic0: '0x5ff3a38200000000000000000000000000000000000000000000000000000000' # dent(uint256,uint256,uint256)
+          handler: handleDent
+        - event: LogNote(indexed bytes4,indexed address,indexed bytes32,indexed bytes32,bytes)
+          topic0: '0xc959c42b00000000000000000000000000000000000000000000000000000000' # deal(uint256)
+          handler: handleDeal
+      file: ./src/mapping.ts
+  - kind: ethereum/contract
+    name: FlipperWBTC
+    network: mainnet
+    source:
+      address: '0x3e115d85d4d7253b05fec9c0bb5b08383c2b0603'
+      abi: Flipper
+      startBlock: 9975625
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - Bid
+      abis:
+        - name: Flipper
+          file: ./abis/Flipper.json
+      eventHandlers:
+        - event: Kick(uint256,uint256,uint256,uint256,indexed address,indexed address)
+          handler: handleKick
+        - event: LogNote(indexed bytes4,indexed address,indexed bytes32,indexed bytes32,bytes)
+          topic0: '0x4b43ed1200000000000000000000000000000000000000000000000000000000' # tend(uint256,uint256,uint256)
+          handler: handleTend
+        - event: LogNote(indexed bytes4,indexed address,indexed bytes32,indexed bytes32,bytes)
+          topic0: '0x5ff3a38200000000000000000000000000000000000000000000000000000000' # dent(uint256,uint256,uint256)
+          handler: handleDent
+        - event: LogNote(indexed bytes4,indexed address,indexed bytes32,indexed bytes32,bytes)
+          topic0: '0xc959c42b00000000000000000000000000000000000000000000000000000000' # deal(uint256)
+          handler: handleDeal
+      file: ./src/mapping.ts
+  - kind: ethereum/contract
+    name: FlipperSAI
+    network: mainnet
+    source:
+      address: '0x5432b2f3c0dff95aa191c45e5cbd539e2820ae72'
+      abi: Flipper
+      startBlock: 8928212
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4

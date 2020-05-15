@@ -17,4 +17,5 @@ type Bid @entity {
   state: BidState! # Wether deal was called on this Bid
   origLot: BigInt! # Lot, when the Bid is created
   dealTxHash: Bytes # Transaction hash of the deal call
+  ilk: String! # Collateral type (ETH, USDC, etc)
 }

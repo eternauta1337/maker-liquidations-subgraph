@@ -148,4 +148,13 @@ export class Bid extends Entity {
       this.set("dealTxHash", Value.fromBytes(value as Bytes));
     }
   }
+
+  get ilk(): string {
+    let value = this.get("ilk");
+    return value.toString();
+  }
+
+  set ilk(value: string) {
+    this.set("ilk", Value.fromString(value));
+  }
 }
