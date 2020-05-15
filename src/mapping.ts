@@ -1,55 +1,116 @@
-import { BigInt } from "@graphprotocol/graph-ts"
-import { Contract, Kick, LogNote } from "../generated/Contract/Contract"
-import { ExampleEntity } from "../generated/schema"
+import { BigInt, Bytes, log } from '@graphprotocol/graph-ts'
 
-export function handleKick(event: Kick): void {
-  // Entities can be loaded from the store using a string ID; this ID
-  // needs to be unique across all entities of the same type
-  let entity = ExampleEntity.load(event.transaction.from.toHex())
+// Events.
+import {
+  Kick as KickEvent,
+  LogNote as LogNoteEvent
+} from "../generated/Flipper/Flipper"
 
-  // Entities only exist after they have been saved to the store;
-  // `null` checks allow to create entities on demand
-  if (entity == null) {
-    entity = new ExampleEntity(event.transaction.from.toHex())
+// Contracts.
+import { Flipper as FlipperContract } from "../generated/Flipper/Flipper"
 
-    // Entity fields can be set using simple assignments
-    entity.count = BigInt.fromI32(0)
-  }
+// Entities.
+import { Bid as BidEntity } from "../generated/schema"
 
-  // BigInt and BigDecimal math are supported
-  entity.count = entity.count + BigInt.fromI32(1)
+export function handleKick(event: KickEvent): void {
+  let bidId = event.params.id
 
-  // Entity fields can be set based on event parameters
-  entity.id = event.params.id
-  entity.lot = event.params.lot
+  // log.info('Creating Bid with id {}', [
+  //   bidId.toString()
+  // ])
 
-  // Entities can be written to the store with `.save()`
-  entity.save()
+  // Create a new Bid entity.
+  let bidEntity = new BidEntity(bidId.toString())
+  bidEntity.dealt = false
 
-  // Note: If a handler doesn't require existing field values, it is faster
-  // _not_ to load the entity from the store. Instead, create it fresh with
-  // `new Entity(...)`, set the fields that should be updated and save the
-  // entity back to the store. Fields that were not set or unset remain
-  // unchanged, allowing for partial updates to be applied.
+  // Populate data from the event.
+  bidEntity.bid = event.params.bid
+  bidEntity.lot = event.params.lot
+  bidEntity.usr = event.params.usr
+  bidEntity.gal = event.params.gal
+  bidEntity.tab = event.params.tab
 
-  // It is also possible to access smart contracts from mappings. For
-  // example, the contract that has emitted the event can be connected to
-  // with:
-  //
-  // let contract = Contract.bind(event.address)
-  //
-  // The following functions can then be called on this contract to access
-  // state variables and other data:
-  //
-  // - contract.beg(...)
-  // - contract.bids(...)
-  // - contract.ilk(...)
-  // - contract.kick(...)
-  // - contract.kicks(...)
-  // - contract.tau(...)
-  // - contract.ttl(...)
-  // - contract.vat(...)
-  // - contract.wards(...)
+  // Retrieve the contract.
+  let contract = FlipperContract.bind(event.address)
+
+  // Populate data from the contract.
+  let bid = contract.bids(bidId)
+  bidEntity.guy = bid.value2
+  bidEntity.tic = bid.value3
+  bidEntity.end = bid.value4
+
+  // log.info('  bid.guy: {}', [
+  //   bidEntity.guy.toHexString()
+  // ])
+
+  bidEntity.save()
 }
 
-export function handleLogNote(event: LogNote): void {}
+export function handleTend(event: LogNoteEvent): void {
+  let bidIdBytes = event.params.arg1.reverse() as Bytes
+  let bidId = BigInt.fromUnsignedBytes(bidIdBytes)
+
+  // log.info('Tending Bid with id {}', [
+  //   bidId.toString()
+  // ])
+
+  // Retrieve existing Bid entity.
+  let bidEntity = BidEntity.load(bidId.toString())
+
+  // Retrieve the contract.
+  let contract = FlipperContract.bind(event.address)
+
+  // Populate data from the contract.
+  let bid = contract.bids(bidId)
+  bidEntity.bid = bid.value0
+  bidEntity.guy = bid.value2
+  bidEntity.tic = bid.value3
+
+  // log.info('  bid.guy: {}', [
+  //   bidEntity.guy.toHexString()
+  // ])
+
+  bidEntity.save()
+}
+
+export function handleDent(event: LogNoteEvent): void {
+  let bidIdBytes = event.params.arg1.reverse() as Bytes
+  let bidId = BigInt.fromUnsignedBytes(bidIdBytes)
+
+  // log.info('Denting Bid with id {}', [
+  //   bidId.toString()
+  // ])
+
+  // Retrieve existing Bid entity.
+  let bidEntity = BidEntity.load(bidId.toString())
+
+  // Retrieve the contract.
+  let contract = FlipperContract.bind(event.address)
+
+  // Populate data from the contract.
+  let bid = contract.bids(bidId)
+  bidEntity.lot = bid.value1
+  bidEntity.guy = bid.value2
+  bidEntity.tic = bid.value3
+
+  // log.info('  bid.guy: {}', [
+  //   bidEntity.guy.toHexString()
+  // ])
+
+  bidEntity.save()
+}
+
+export function handleDeal(event: LogNoteEvent): void {
+  let bidIdBytes = event.params.arg1.reverse() as Bytes
+  let bidId = BigInt.fromUnsignedBytes(bidIdBytes)
+
+  log.info('Dealing Bid with id {}', [
+    bidId.toString()
+  ])
+
+  // Retrieve existing Bid entity.
+  let bidEntity = BidEntity.load(bidId.toString())
+  bidEntity.dealt = true
+
+  bidEntity.save()
+}

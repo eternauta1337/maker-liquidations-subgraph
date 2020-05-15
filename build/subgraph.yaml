@@ -1,12 +1,12 @@
 specVersion: 0.0.2
 schema:
-  file: ./schema.graphql
+  file: schema.graphql
 dataSources:
   - kind: ethereum/contract
     name: Flipper
     network: mainnet
     source:
-      address: '0xd8a04f5412223f513dc55f839574430f5ec15531'
+      address: "0xd8a04f5412223f513dc55f839574430f5ec15531"
       abi: Flipper
       startBlock: 8928180
     mapping:
@@ -17,17 +17,17 @@ dataSources:
         - Bid
       abis:
         - name: Flipper
-          file: ./abis/Flipper.json
+          file: Flipper/abis/Flipper.json
       eventHandlers:
         - event: Kick(uint256,uint256,uint256,uint256,indexed address,indexed address)
           handler: handleKick
         - event: LogNote(indexed bytes4,indexed address,indexed bytes32,indexed bytes32,bytes)
-          topic0: '0x4b43ed1200000000000000000000000000000000000000000000000000000000' # tend(uint256,uint256,uint256)
+          topic0: "0x4b43ed1200000000000000000000000000000000000000000000000000000000"
           handler: handleTend
         - event: LogNote(indexed bytes4,indexed address,indexed bytes32,indexed bytes32,bytes)
-          topic0: '0x5ff3a38200000000000000000000000000000000000000000000000000000000' # dent(uint256,uint256,uint256)
+          topic0: "0x5ff3a38200000000000000000000000000000000000000000000000000000000"
           handler: handleDent
         - event: LogNote(indexed bytes4,indexed address,indexed bytes32,indexed bytes32,bytes)
-          topic0: '0xc959c42b00000000000000000000000000000000000000000000000000000000' # deal(uint256)
+          topic0: "0xc959c42b00000000000000000000000000000000000000000000000000000000"
           handler: handleDeal
-      file: ./src/mapping.ts
+      file: Flipper/Flipper.wasm
