@@ -1,3 +1,9 @@
+enum BidState {
+  TENDING
+  DENTING
+  DEALT
+}
+
 type Bid @entity {
   id: ID!
   bid: BigInt! # Amount offered
@@ -8,5 +14,7 @@ type Bid @entity {
   usr: Bytes!  # Address of the vault being auctioned
   gal: Bytes!  # Recipient of auction income (Vow contract)
   tab: BigInt! # Dai to be raised in auction
-  dealt: Boolean! # Wether deal was called on this Bid
+  state: BidState! # Wether deal was called on this Bid
+  origLot: BigInt! # Lot, when the Bid is created
+  dealTxHash: Bytes # Transaction hash of the deal call
 }

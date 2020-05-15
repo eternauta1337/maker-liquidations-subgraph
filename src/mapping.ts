@@ -21,7 +21,6 @@ export function handleKick(event: KickEvent): void {
 
   // Create a new Bid entity.
   let bidEntity = new BidEntity(bidId.toString())
-  bidEntity.dealt = false
 
   // Populate data from the event.
   bidEntity.bid = event.params.bid
@@ -38,6 +37,10 @@ export function handleKick(event: KickEvent): void {
   bidEntity.guy = bid.value2
   bidEntity.tic = bid.value3
   bidEntity.end = bid.value4
+
+  // Metadata.
+  bidEntity.state = 'TENDING'
+  bidEntity.origLot = bidEntity.lot
 
   // log.info('  bid.guy: {}', [
   //   bidEntity.guy.toHexString()
@@ -93,6 +96,9 @@ export function handleDent(event: LogNoteEvent): void {
   bidEntity.guy = bid.value2
   bidEntity.tic = bid.value3
 
+  // Metadata.
+  bidEntity.state = 'DENTING'
+
   // log.info('  bid.guy: {}', [
   //   bidEntity.guy.toHexString()
   // ])
@@ -110,7 +116,10 @@ export function handleDeal(event: LogNoteEvent): void {
 
   // Retrieve existing Bid entity.
   let bidEntity = BidEntity.load(bidId.toString())
-  bidEntity.dealt = true
+
+  // Metadata.
+  bidEntity.state = 'DEALT'
+  bidEntity.dealTxHash = event.transaction.hash
 
   bidEntity.save()
 }

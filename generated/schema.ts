@@ -114,12 +114,38 @@ export class Bid extends Entity {
     this.set("tab", Value.fromBigInt(value));
   }
 
-  get dealt(): boolean {
-    let value = this.get("dealt");
-    return value.toBoolean();
+  get state(): string {
+    let value = this.get("state");
+    return value.toString();
   }
 
-  set dealt(value: boolean) {
-    this.set("dealt", Value.fromBoolean(value));
+  set state(value: string) {
+    this.set("state", Value.fromString(value));
+  }
+
+  get origLot(): BigInt {
+    let value = this.get("origLot");
+    return value.toBigInt();
+  }
+
+  set origLot(value: BigInt) {
+    this.set("origLot", Value.fromBigInt(value));
+  }
+
+  get dealTxHash(): Bytes | null {
+    let value = this.get("dealTxHash");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toBytes();
+    }
+  }
+
+  set dealTxHash(value: Bytes | null) {
+    if (value === null) {
+      this.unset("dealTxHash");
+    } else {
+      this.set("dealTxHash", Value.fromBytes(value as Bytes));
+    }
   }
 }
