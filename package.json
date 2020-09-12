@@ -15,7 +15,7 @@
     "@graphprotocol/graph-ts": "0.18.0",
     "clipboardy": "^2.3.0",
     "global": "^4.4.0",
-    "node-fetch": "^2.6.0",
+    "node-fetch": "^2.6.1",
     "pocketh": "^0.1.67"
   }
 }
